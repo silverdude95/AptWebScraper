@@ -10,7 +10,7 @@ import re
 pagenum = 1   #variable made for the pagenumber of the URL
 
 time.sleep(5) # sleep for 5 seconds so webpage doesn't block us lol
-url= 'https://www.arborsarundel.com/floor-plans/?sort=unitrent&order=ASC&pagenumber=' + str(pagenum) + '&nab=0' #url of website with pagenum variable so we can modify this later
+url= 'https://www.arborsarundel.com/floor-plans/?sort=unitrent&order=ASC&pagenumber=' + str(pagenum) #url of website with pagenum variable so we can modify this later
 page = requests.get(url)  # get request for page
 ParsedHTML = BeautifulSoup(page.content, 'html.parser') #parser and making page code look readable
 aptListings = ParsedHTML.find_all('div', class_ = 'mt_list_box')
@@ -29,5 +29,9 @@ for entry in aptListings:
     except AttributeError:
         #if no <spans> are found
         baths = 'WE AINT FOUND SHIT' # apply your error handling
+    # F I N D I N G  P R I C E
+    # Do stuff normally. You know. Don't be weird about it. Get the entry, find the price, remove the comma for stuff over 1000, get only numbers with regex. You know. EzPz. Right? Right???
+    price = (re.findall(r'\d+', entry.find('span', class_ = 'mt_txt_sub').text.replace(',', '')))[0] # p.s. i copied a bunch of this stuff. thx internet :+1:
 
-print(baths+' baths and '+ beds) #print the code gotten from the webpage
+
+    print(price)
